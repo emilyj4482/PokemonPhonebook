@@ -14,7 +14,7 @@
 		A152D9442D04D3CA00E6C87E /* Exceptions for "PokemonPhonebook" folder in "PokemonPhonebook" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				App/Info.plist,
 			);
 			target = A152D92E2D04D3C900E6C87E /* PokemonPhonebook */;
 		};
@@ -147,7 +147,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6N8M4PHX7P;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PokemonPhonebook/Info.plist;
+				INFOPLIST_FILE = PokemonPhonebook/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -174,7 +174,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6N8M4PHX7P;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PokemonPhonebook/Info.plist;
+				INFOPLIST_FILE = PokemonPhonebook/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
