@@ -27,14 +27,18 @@ class PhoneBookView: UIView {
         return button
     }()
     
-    private lazy var nameTextView: UITextView = {
-        let textView = UITextView()
+    private lazy var nameTextField: UITextField = {
+        let textView = UITextField()
+        
+        textView.borderStyle = .roundedRect
         
         return textView
     }()
     
-    private lazy var numberTextView: UITextView = {
-        let textView = UITextView()
+    private lazy var numberTextField: UITextField = {
+        let textView = UITextField()
+        
+        textView.borderStyle = .roundedRect
         
         return textView
     }()
@@ -55,7 +59,7 @@ class PhoneBookView: UIView {
     }
     
     private func layout() {
-        addSubViews([randomImageView, fetchButton, nameTextView, numberTextView])
+        addSubViews([randomImageView, fetchButton, nameTextField, numberTextField])
         
         let offset: CGFloat = 16
         
@@ -72,16 +76,16 @@ class PhoneBookView: UIView {
             $0.top.equalTo(randomImageView.snp.bottom).offset(offset)
         }
         
-        nameTextView.snp.makeConstraints {
+        nameTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(fetchButton.snp.bottom).offset(-32)
+            $0.top.equalTo(fetchButton.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(offset)
             $0.trailing.equalToSuperview().offset(-offset)
         }
         
-        numberTextView.snp.makeConstraints {
+        numberTextField.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(nameTextView.snp.bottom).offset(-offset)
+            $0.top.equalTo(nameTextField.snp.bottom).offset(offset)
             $0.leading.equalToSuperview().offset(offset)
             $0.trailing.equalToSuperview().offset(-offset)
         }
@@ -89,8 +93,8 @@ class PhoneBookView: UIView {
     
     private func configure(_ phoneBook: PhoneBook) {
         randomImageView.image = UIImage(named: phoneBook.imageURL)
-        nameTextView.text = phoneBook.name
-        numberTextView.text = phoneBook.phoneNumber
+        nameTextField.text = phoneBook.name
+        numberTextField.text = phoneBook.phoneNumber
     }
 }
 
