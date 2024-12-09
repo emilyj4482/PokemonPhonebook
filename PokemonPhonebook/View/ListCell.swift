@@ -37,6 +37,11 @@ class ListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupImageView()
+    }
+    
     private func layout() {
         selectionStyle = .none
         
@@ -66,5 +71,12 @@ class ListCell: UITableViewCell {
         profileImageView.image = UIImage(named: phoneBook.imageURL)
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
+    }
+    
+    private func setupImageView() {
+        profileImageView.layer.masksToBounds = true
+        profileImageView.layer.cornerRadius = profileImageView.bounds.height / 2
+        profileImageView.layer.borderColor = UIColor.darkGray.cgColor
+        profileImageView.layer.borderWidth = 1
     }
 }
