@@ -8,12 +8,16 @@
 import UIKit
 
 class PhoneBookViewController: UIViewController {
+    
+    private let vm: PhoneBookViewModel = .init()
+    
     private lazy var containerView: PhoneBookView = .init()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         layout()
+        vm.fetchPokemon()
     }
     
     private func setNavigationBar() {
