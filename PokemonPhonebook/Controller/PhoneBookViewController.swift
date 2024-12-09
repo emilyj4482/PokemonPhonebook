@@ -40,7 +40,7 @@ class PhoneBookViewController: UIViewController {
     }
 }
 
-extension PhoneBookViewController: RandomImageDelegate {
+extension PhoneBookViewController: ImageFetchingDelegate {
     func fetchPokemonImage(_ id: Int) {
         vm.fetchPokemon(id)
     }

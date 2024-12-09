@@ -8,13 +8,13 @@
 import UIKit
 import Alamofire
 
-protocol PhoneBookViewDelegate: AnyObject {
+protocol ImageBindingDelegate: AnyObject {
     func bindImage(_ image: UIImage)
 }
 
 class PhoneBookViewModel {
     
-    weak var delegate: PhoneBookViewDelegate?
+    weak var delegate: ImageBindingDelegate?
     
     private let networkService: NetworkServiceType
     
@@ -29,7 +29,7 @@ class PhoneBookViewModel {
         networkService.requestData(url: url) { (result: Result<Pokemon, AFError>) in
             switch result {
             case .success(let pokemon):
-                guard let imageURL = URL(string: pokemon.sprites.imageURL) else { return }
+                guard let imageURL = URL(string: pokemon.image.imageURL) else { return }
                 AF.request(imageURL).responseData { response in
                     if let data = response.data, let image = UIImage(data: data) {
                         DispatchQueue.main.async { [weak self] in

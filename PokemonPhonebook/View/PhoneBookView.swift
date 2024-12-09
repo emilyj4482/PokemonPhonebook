@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol RandomImageDelegate: AnyObject {
+protocol ImageFetchingDelegate: AnyObject {
     func fetchPokemonImage(_ id: Int)
 }
 
 class PhoneBookView: UIView {
-    weak var delegate: RandomImageDelegate?
+    weak var delegate: ImageFetchingDelegate?
     
     private lazy var randomImageView: UIImageView = {
         let imageView = UIImageView()
@@ -106,7 +106,7 @@ class PhoneBookView: UIView {
     }
 }
 
-extension PhoneBookView: PhoneBookViewDelegate {
+extension PhoneBookView: ImageBindingDelegate {
     @objc func fetchButtonTapped() {
         delegate?.fetchPokemonImage(2)
     }

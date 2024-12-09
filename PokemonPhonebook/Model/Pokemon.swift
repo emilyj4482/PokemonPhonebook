@@ -10,7 +10,12 @@ import Foundation
 struct Pokemon: Decodable {
     let id: Int
     let name: String
-    let sprites: PokemonImage
+    let image: PokemonImage
+    
+    enum CodingKeys: String, CodingKey {
+        case id, name
+        case image = "sprites"
+    }
 }
 
 struct PokemonImage: Decodable {
