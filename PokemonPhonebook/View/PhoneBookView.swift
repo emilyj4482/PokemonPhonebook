@@ -59,6 +59,8 @@ class PhoneBookView: UIView {
     }
     
     private func layout() {
+        backgroundColor = .systemBackground
+        
         addSubViews([randomImageView, fetchButton, nameTextField, numberTextField])
         
         let offset: CGFloat = 16

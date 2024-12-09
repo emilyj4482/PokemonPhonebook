@@ -28,6 +28,8 @@ class MainListView: UIView {
     }
     
     private func layout() {
+        backgroundColor = .systemBackground
+        
         addSubview(listTableView)
         
         listTableView.snp.makeConstraints {
