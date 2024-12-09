@@ -22,18 +22,13 @@ class PhoneBookViewModel {
         self.networkService = networkService
     }
     
-    func fetchPokemon() {
-        let id: Int = 1
-        
+    func fetchPokemon(_ id: Int) {
         let urlCompoments = URLComponents(string: "https://pokeapi.co/api/v2/pokemon/\(id)")
-        
         guard let url = urlCompoments?.url else { return }
         
         networkService.requestData(url: url) { (result: Result<Pokemon, AFError>) in
             switch result {
             case .success(let pokemon):
-                print(pokemon)
-                
                 guard let imageURL = URL(string: pokemon.sprites.imageURL) else { return }
                 AF.request(imageURL).responseData { response in
                     if let data = response.data, let image = UIImage(data: data) {

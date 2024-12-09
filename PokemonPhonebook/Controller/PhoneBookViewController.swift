@@ -18,7 +18,7 @@ class PhoneBookViewController: UIViewController {
         setNavigationBar()
         layout()
         setDelegate()
-        vm.fetchPokemon()
+        fetchPokemonImage(1)
     }
     
     private func setNavigationBar() {
@@ -36,10 +36,15 @@ class PhoneBookViewController: UIViewController {
     
     private func setDelegate() {
         vm.delegate = containerView
+        containerView.delegate = self
     }
 }
 
-extension PhoneBookViewController {
+extension PhoneBookViewController: RandomImageDelegate {
+    func fetchPokemonImage(_ id: Int) {
+        vm.fetchPokemon(id)
+    }
+    
     @objc func confirmButtonTapped() {
         print("tapped")
     }
