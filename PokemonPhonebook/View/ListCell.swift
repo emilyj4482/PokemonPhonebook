@@ -31,7 +31,6 @@ class ListCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         layout()
-        configure(PhoneBook.dummy)
     }
     
     required init?(coder: NSCoder) {
@@ -39,6 +38,8 @@ class ListCell: UITableViewCell {
     }
     
     private func layout() {
+        selectionStyle = .none
+        
         addSubViews([profileImageView, nameLabel, numberLabel])
         
         let offset: CGFloat = 16
@@ -61,7 +62,7 @@ class ListCell: UITableViewCell {
         }
     }
     
-    private func configure(_ phoneBook: PhoneBook) {
+    func configure(_ phoneBook: PhoneBook) {
         profileImageView.image = UIImage(named: phoneBook.imageURL)
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber

@@ -9,6 +9,12 @@ import UIKit
 
 class MainListViewController: UIViewController {
     
+    private lazy var containerView: MainListView = .init()
+    
+    override func loadView() {
+        view = containerView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
