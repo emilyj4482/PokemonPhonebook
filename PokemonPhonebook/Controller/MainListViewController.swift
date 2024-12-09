@@ -8,7 +8,6 @@
 import UIKit
 
 class MainListViewController: UIViewController {
-    
     private lazy var containerView: MainListView = .init()
     
     override func loadView() {
@@ -24,7 +23,6 @@ class MainListViewController: UIViewController {
         navigationItem.title = "친구 목록"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
     }
-    
 }
 
 extension MainListViewController {

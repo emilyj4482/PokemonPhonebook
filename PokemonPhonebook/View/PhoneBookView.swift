@@ -8,7 +8,6 @@
 import UIKit
 
 class PhoneBookView: UIView {
-    
     private lazy var randomImageView: UIImageView = {
         let imageView = UIImageView()
         

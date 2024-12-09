@@ -10,13 +10,10 @@ import UIKit
 class PhoneBookViewController: UIViewController {
     private lazy var containerView: PhoneBookView = .init()
     
-    override func loadView() {
-        view = containerView
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
+        layout()
     }
     
     private func setNavigationBar() {
@@ -24,10 +21,21 @@ class PhoneBookViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "적용", style: .plain, target: self, action: #selector(confirmButtonTapped))
     }
     
+    private func layout() {
+        view.addSubview(containerView)
+        
+        containerView.snp.makeConstraints {
+            $0.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
 }
 
 extension PhoneBookViewController {
     @objc func confirmButtonTapped() {
         print("tapped")
     }
+}
+
+#Preview {
+    UINavigationController(rootViewController: PhoneBookViewController())
 }
