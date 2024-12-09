@@ -8,7 +8,7 @@
 import UIKit
 
 class MainListViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
@@ -18,7 +18,7 @@ class MainListViewController: UIViewController {
         navigationItem.title = "친구 목록"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
     }
-
+    
 }
 
 extension MainListViewController {
