@@ -39,7 +39,7 @@ class ListCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        setupImageView()
+        profileImageView.setImageViewRounded()
     }
     
     private func layout() {
@@ -71,12 +71,5 @@ class ListCell: UITableViewCell {
         profileImageView.image = UIImage(named: phoneBook.imageURL)
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
-    }
-    
-    private func setupImageView() {
-        profileImageView.layer.masksToBounds = true
-        profileImageView.layer.cornerRadius = profileImageView.bounds.height / 2
-        profileImageView.layer.borderColor = UIColor.darkGray.cgColor
-        profileImageView.layer.borderWidth = 1
     }
 }
