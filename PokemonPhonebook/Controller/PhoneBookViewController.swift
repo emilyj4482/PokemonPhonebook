@@ -17,6 +17,7 @@ class PhoneBookViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         layout()
+        setDelegate()
         vm.fetchPokemon()
     }
     
@@ -31,6 +32,10 @@ class PhoneBookViewController: UIViewController {
         containerView.snp.makeConstraints {
             $0.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    private func setDelegate() {
+        vm.delegate = containerView
     }
 }
 

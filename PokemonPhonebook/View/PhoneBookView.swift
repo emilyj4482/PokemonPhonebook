@@ -100,8 +100,12 @@ class PhoneBookView: UIView {
     }
 }
 
-extension PhoneBookView {
+extension PhoneBookView: PhoneBookViewDelegate {
     @objc func fetchButtonTapped() {
         print("tapped")
+    }
+    
+    func bindImage(_ image: UIImage) {
+        randomImageView.image = image
     }
 }
