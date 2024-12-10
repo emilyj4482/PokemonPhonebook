@@ -7,12 +7,13 @@
 
 import UIKit
 
-protocol ImageFetchingDelegate: AnyObject {
+protocol PhoneBookViewDelegate: AnyObject {
     func fetchPokemonImage(_ id: Int)
 }
 
 class PhoneBookView: UIView {
-    weak var delegate: ImageFetchingDelegate?
+    weak var delegate: PhoneBookViewDelegate?
+    var mode: Mode
     
     private lazy var randomImageView: UIImageView = {
         let imageView = UIImageView()
@@ -29,31 +30,53 @@ class PhoneBookView: UIView {
         button.setTitle("랜덤 이미지 생성", for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
+        button.setTitleColor(.placeholderText, for: .disabled)
         button.addTarget(self, action: #selector(fetchButtonTapped), for: .touchUpInside)
         
         return button
     }()
     
     private lazy var nameTextField: UITextField = {
-        let textView = UITextField()
+        let textField = UITextField()
         
-        textView.borderStyle = .roundedRect
+        textField.borderStyle = .roundedRect
+        textField.placeholder = "이름"
         
-        return textView
+        return textField
     }()
     
     private lazy var numberTextField: UITextField = {
-        let textView = UITextField()
+        let textField = UITextField()
         
-        textView.borderStyle = .roundedRect
+        textField.borderStyle = .roundedRect
+        textField.placeholder = "전화번호"
         
-        return textView
+        return textField
     }()
     
-    override init(frame: CGRect) {
+    private lazy var nameLabel: UILabel = {
+        let label = UILabel()
+        
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 17)
+        
+        return label
+    }()
+    
+    private lazy var numberLabel: UILabel = {
+        let label = UILabel()
+        
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 17)
+        
+        return label
+    }()
+    
+    init(frame: CGRect = .zero, mode: Mode) {
+        self.mode = mode
         super.init(frame: frame)
         layout()
-        configure(PhoneBook.dummy)
+        setupView()
     }
     
     required init?(coder: NSCoder) {
@@ -68,7 +91,7 @@ class PhoneBookView: UIView {
     private func layout() {
         backgroundColor = .systemBackground
         
-        addSubViews([randomImageView, fetchButton, nameTextField, numberTextField])
+        addSubViews([randomImageView, fetchButton, nameTextField, numberTextField, nameLabel, numberLabel])
         
         let offset: CGFloat = 16
         
@@ -98,12 +121,43 @@ class PhoneBookView: UIView {
             $0.leading.equalToSuperview().offset(offset)
             $0.trailing.equalToSuperview().offset(-offset)
         }
+        
+        nameLabel.snp.makeConstraints {
+            $0.top.bottom.trailing.equalTo(nameTextField)
+            $0.leading.equalTo(nameTextField.textInputView)
+            $0.centerX.equalToSuperview()
+        }
+        
+        numberLabel.snp.makeConstraints {
+            $0.top.bottom.trailing.equalTo(numberTextField)
+            $0.leading.equalTo(numberTextField.textInputView)
+            $0.centerX.equalToSuperview()
+        }
     }
     
-    private func configure(_ phoneBook: PhoneBook) {
+    private func setupView() {
+        switch mode {
+        case .read:
+            hideTextField(true)
+        case .create:
+            hideTextField(false)
+        case .edit:
+            hideTextField(false)
+        }
+    }
+    
+    private func hideTextField(_ bool: Bool) {
+        nameTextField.isHidden = bool
+        numberTextField.isHidden = bool
+        nameLabel.isHidden = !bool
+        numberLabel.isHidden = !bool
+        fetchButton.isEnabled = !bool
+    }
+    
+    func configure(_ phoneBook: PhoneBook) {
         randomImageView.image = UIImage(named: phoneBook.imageURL)
-        nameTextField.text = phoneBook.name
-        numberTextField.text = phoneBook.phoneNumber
+        nameLabel.text = phoneBook.name
+        numberLabel.text = phoneBook.phoneNumber
     }
 }
 

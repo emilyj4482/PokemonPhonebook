@@ -7,18 +7,25 @@
 
 import UIKit
 
+enum Mode {
+    case read
+    case create
+    case edit
+}
+
 class PhoneBookViewController: UIViewController {
-    
     private let vm: PhoneBookViewModel = .init()
+    private lazy var containerView: PhoneBookView = .init(mode: mode)
     
-    private lazy var containerView: PhoneBookView = .init()
+    var mode: Mode = .read
+    var phoneBook: PhoneBook?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         layout()
         setDelegate()
-        fetchPokemonImage(1)
+        configureContainerView()
     }
     
     private func setNavigationBar() {
@@ -38,9 +45,21 @@ class PhoneBookViewController: UIViewController {
         vm.delegate = containerView
         containerView.delegate = self
     }
+    
+    private func configureContainerView() {
+        switch mode {
+        case .read:
+            guard let phoneBook = phoneBook else { return }
+            containerView.configure(phoneBook)
+        case .create:
+            fetchPokemonImage(1)
+        case .edit:
+            return
+        }
+    }
 }
 
-extension PhoneBookViewController: ImageFetchingDelegate {
+extension PhoneBookViewController: PhoneBookViewDelegate {
     func fetchPokemonImage(_ id: Int) {
         vm.fetchPokemon(id)
     }
