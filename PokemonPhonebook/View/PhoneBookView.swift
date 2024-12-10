@@ -96,10 +96,10 @@ class PhoneBookView: UIView {
         let offset: CGFloat = 16
         
         randomImageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(offset)
             $0.leading.equalToSuperview().offset(120)
             $0.trailing.equalToSuperview().offset(-120)
-            $0.centerX.equalToSuperview()
             $0.height.equalTo(randomImageView.snp.width)
         }
         
@@ -125,13 +125,11 @@ class PhoneBookView: UIView {
         nameLabel.snp.makeConstraints {
             $0.top.bottom.trailing.equalTo(nameTextField)
             $0.leading.equalTo(nameTextField.textInputView)
-            $0.centerX.equalToSuperview()
         }
         
         numberLabel.snp.makeConstraints {
             $0.top.bottom.trailing.equalTo(numberTextField)
             $0.leading.equalTo(numberTextField.textInputView)
-            $0.centerX.equalToSuperview()
         }
     }
     
