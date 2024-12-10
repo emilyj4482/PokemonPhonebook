@@ -13,7 +13,11 @@ protocol PhoneBookViewDelegate: AnyObject {
 
 class PhoneBookView: UIView {
     weak var delegate: PhoneBookViewDelegate?
-    var mode: Mode
+    var mode: Mode {
+        didSet {
+            setupView()
+        }
+    }
     
     private lazy var randomImageView: UIImageView = {
         let imageView = UIImageView()
@@ -142,10 +146,15 @@ class PhoneBookView: UIView {
         fetchButton.isEnabled = !bool
     }
     
-    func configure(_ phoneBook: PhoneBook) {
+    func bind(_ phoneBook: PhoneBook) {
         randomImageView.image = UIImage(named: phoneBook.imageURL)
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
+    }
+    
+    func bindTextFields(_ phonBook: PhoneBook) {
+        nameTextField.text = phonBook.name
+        numberTextField.text = phonBook.phoneNumber
     }
 }
 

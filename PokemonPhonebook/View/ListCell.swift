@@ -67,7 +67,7 @@ class ListCell: UITableViewCell {
         }
     }
     
-    func configure(_ phoneBook: PhoneBook) {
+    func bind(_ phoneBook: PhoneBook) {
         profileImageView.image = UIImage(named: phoneBook.imageURL)
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber

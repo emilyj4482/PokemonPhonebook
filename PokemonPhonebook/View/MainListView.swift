@@ -59,7 +59,7 @@ extension MainListView: UITableViewDataSource, UITableViewDelegate {
             let phoneBook = delegate?.getPhoneBook(with: indexPath.row)
         else { return UITableViewCell() }
         
-        cell.configure(phoneBook)
+        cell.bind(phoneBook)
         
         return cell
     }
