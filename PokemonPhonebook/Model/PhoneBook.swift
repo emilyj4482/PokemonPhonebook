@@ -11,6 +11,4 @@ struct PhoneBook {
     var imageURL: String
     var name: String
     var phoneNumber: String
-    
-    static let dummy = PhoneBook(imageURL: "pokemonball", name: "피카츄", phoneNumber: "010-1234-5678")
 }

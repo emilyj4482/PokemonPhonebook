@@ -8,6 +8,7 @@
 import UIKit
 
 class MainListViewController: UIViewController {
+    private let vm: MainListViewModel = .init()
     private lazy var containerView: MainListView = .init()
     
     override func loadView() {
@@ -17,6 +18,7 @@ class MainListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
+        containerView.delegate = self
     }
     
     private func setNavigationBar() {
@@ -25,9 +27,26 @@ class MainListViewController: UIViewController {
     }
 }
 
-extension MainListViewController {
+extension MainListViewController: MainListViewDelegate {
+    func getPhoneBookCount() -> Int {
+        vm.phoneBooks.count
+    }
+    
+    func getPhoneBook(with index: Int) -> PhoneBook {
+        return vm.phoneBooks[index]
+    }
+    
+    func pushPhoneBookView(with index: Int) {
+        let vc = PhoneBookViewController()
+        vc.mode = .read
+        vc.phoneBook = vm.phoneBooks[index]
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @objc func addButtonTapped() {
-        navigationController?.pushViewController(PhoneBookViewController(), animated: true)
+        let vc = PhoneBookViewController()
+        vc.mode = .create
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
