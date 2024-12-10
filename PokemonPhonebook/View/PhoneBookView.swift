@@ -7,17 +7,23 @@
 
 import UIKit
 
-protocol ImageFetchingDelegate: AnyObject {
+protocol PhoneBookViewDelegate: AnyObject {
     func fetchPokemonImage(_ id: Int)
 }
 
 class PhoneBookView: UIView {
-    weak var delegate: ImageFetchingDelegate?
+    weak var delegate: PhoneBookViewDelegate?
+    var mode: Mode {
+        didSet {
+            setupView()
+        }
+    }
     
     private lazy var randomImageView: UIImageView = {
         let imageView = UIImageView()
         
         imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage.pokemonball
         
         return imageView
     }()
@@ -28,31 +34,56 @@ class PhoneBookView: UIView {
         button.setTitle("랜덤 이미지 생성", for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
+        button.setTitleColor(.tertiarySystemFill, for: .disabled)
         button.addTarget(self, action: #selector(fetchButtonTapped), for: .touchUpInside)
         
         return button
     }()
     
-    private lazy var nameTextField: UITextField = {
-        let textView = UITextField()
+    private func phoneBookTextField(_ placeholder: String) -> UITextField {
+        let textField = UITextField()
         
-        textView.borderStyle = .roundedRect
+        textField.borderStyle = .roundedRect
+        textField.placeholder = placeholder
         
-        return textView
+        return textField
+    }
+    
+    private lazy var nameTextField = phoneBookTextField("이름")
+    
+    private lazy var numberTextField = phoneBookTextField("전화번호")
+    
+    private func phoneBookLabel() -> UILabel {
+        let label = UILabel()
+        
+        label.textColor = .label
+        label.font = .systemFont(ofSize: 17)
+        
+        return label
+    }
+    
+    private lazy var nameLabel = phoneBookLabel()
+    
+    private lazy var numberLabel = phoneBookLabel()
+    
+    private lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        
+        button.setTitle("연락처 삭제", for: .normal)
+        button.setTitleColor(.systemRed, for: .normal)
+        button.setTitleColor(.opaqueSeparator, for: .highlighted)
+        button.backgroundColor = .tertiarySystemFill
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
+        return button
     }()
     
-    private lazy var numberTextField: UITextField = {
-        let textView = UITextField()
-        
-        textView.borderStyle = .roundedRect
-        
-        return textView
-    }()
-    
-    override init(frame: CGRect) {
+    init(frame: CGRect = .zero, mode: Mode) {
+        self.mode = mode
         super.init(frame: frame)
         layout()
-        configure(PhoneBook.dummy)
+        setupView()
     }
     
     required init?(coder: NSCoder) {
@@ -67,15 +98,15 @@ class PhoneBookView: UIView {
     private func layout() {
         backgroundColor = .systemBackground
         
-        addSubViews([randomImageView, fetchButton, nameTextField, numberTextField])
+        addSubviews([randomImageView, fetchButton, nameTextField, numberTextField, nameLabel, numberLabel, deleteButton])
         
         let offset: CGFloat = 16
         
         randomImageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().offset(offset)
             $0.leading.equalToSuperview().offset(120)
             $0.trailing.equalToSuperview().offset(-120)
-            $0.centerX.equalToSuperview()
             $0.height.equalTo(randomImageView.snp.width)
         }
         
@@ -97,12 +128,55 @@ class PhoneBookView: UIView {
             $0.leading.equalToSuperview().offset(offset)
             $0.trailing.equalToSuperview().offset(-offset)
         }
+        
+        nameLabel.snp.makeConstraints {
+            $0.top.bottom.trailing.equalTo(nameTextField)
+            $0.leading.equalTo(nameTextField.textInputView)
+        }
+        
+        numberLabel.snp.makeConstraints {
+            $0.top.bottom.trailing.equalTo(numberTextField)
+            $0.leading.equalTo(numberTextField.textInputView)
+        }
+        
+        deleteButton.snp.makeConstraints {
+            $0.top.equalTo(numberLabel.snp.bottom).offset(40)
+            $0.leading.trailing.equalTo(numberTextField)
+            $0.height.equalTo(50)
+        }
     }
     
-    private func configure(_ phoneBook: PhoneBook) {
+    private func setupView() {
+        switch mode {
+        case .read:
+            hideTextField(true)
+        default:
+            hideTextField(false)
+        }
+        hideDeleteButton()
+    }
+    
+    private func hideTextField(_ bool: Bool) {
+        nameTextField.isHidden = bool
+        numberTextField.isHidden = bool
+        nameLabel.isHidden = !bool
+        numberLabel.isHidden = !bool
+        fetchButton.isEnabled = !bool
+    }
+    
+    private func hideDeleteButton() {
+        deleteButton.isHidden = mode != .edit
+    }
+    
+    func bind(_ phoneBook: PhoneBook) {
         randomImageView.image = UIImage(named: phoneBook.imageURL)
-        nameTextField.text = phoneBook.name
-        numberTextField.text = phoneBook.phoneNumber
+        nameLabel.text = phoneBook.name
+        numberLabel.text = phoneBook.phoneNumber
+    }
+    
+    func bindTextFields(_ phonBook: PhoneBook) {
+        nameTextField.text = phonBook.name
+        numberTextField.text = phonBook.phoneNumber
     }
 }
 
@@ -113,5 +187,11 @@ extension PhoneBookView: ImageBindingDelegate {
     
     func bindImage(_ image: UIImage) {
         randomImageView.image = image
+    }
+}
+
+extension PhoneBookView {
+    @objc func deleteButtonTapped() {
+        print("delete")
     }
 }

@@ -45,7 +45,7 @@ class ListCell: UITableViewCell {
     private func layout() {
         selectionStyle = .none
         
-        addSubViews([profileImageView, nameLabel, numberLabel])
+        addSubviews([profileImageView, nameLabel, numberLabel])
         
         let offset: CGFloat = 16
         
@@ -67,7 +67,7 @@ class ListCell: UITableViewCell {
         }
     }
     
-    func configure(_ phoneBook: PhoneBook) {
+    func bind(_ phoneBook: PhoneBook) {
         profileImageView.image = UIImage(named: phoneBook.imageURL)
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
