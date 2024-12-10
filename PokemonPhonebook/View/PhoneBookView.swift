@@ -34,7 +34,7 @@ class PhoneBookView: UIView {
         button.setTitle("랜덤 이미지 생성", for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
         button.setTitleColor(.lightGray, for: .highlighted)
-        button.setTitleColor(.placeholderText, for: .disabled)
+        button.setTitleColor(.tertiarySystemFill, for: .disabled)
         button.addTarget(self, action: #selector(fetchButtonTapped), for: .touchUpInside)
         
         return button
@@ -66,6 +66,19 @@ class PhoneBookView: UIView {
     
     private lazy var numberLabel = phoneBookLabel()
     
+    private lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        
+        button.setTitle("연락처 삭제", for: .normal)
+        button.setTitleColor(.systemRed, for: .normal)
+        button.setTitleColor(.opaqueSeparator, for: .highlighted)
+        button.backgroundColor = .tertiarySystemFill
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
+        return button
+    }()
+    
     init(frame: CGRect = .zero, mode: Mode) {
         self.mode = mode
         super.init(frame: frame)
@@ -85,7 +98,7 @@ class PhoneBookView: UIView {
     private func layout() {
         backgroundColor = .systemBackground
         
-        addSubviews([randomImageView, fetchButton, nameTextField, numberTextField, nameLabel, numberLabel])
+        addSubviews([randomImageView, fetchButton, nameTextField, numberTextField, nameLabel, numberLabel, deleteButton])
         
         let offset: CGFloat = 16
         
@@ -125,17 +138,22 @@ class PhoneBookView: UIView {
             $0.top.bottom.trailing.equalTo(numberTextField)
             $0.leading.equalTo(numberTextField.textInputView)
         }
+        
+        deleteButton.snp.makeConstraints {
+            $0.top.equalTo(numberLabel.snp.bottom).offset(40)
+            $0.leading.trailing.equalTo(numberTextField)
+            $0.height.equalTo(50)
+        }
     }
     
     private func setupView() {
         switch mode {
         case .read:
             hideTextField(true)
-        case .create:
-            hideTextField(false)
-        case .edit:
+        default:
             hideTextField(false)
         }
+        hideDeleteButton()
     }
     
     private func hideTextField(_ bool: Bool) {
@@ -144,6 +162,10 @@ class PhoneBookView: UIView {
         nameLabel.isHidden = !bool
         numberLabel.isHidden = !bool
         fetchButton.isEnabled = !bool
+    }
+    
+    private func hideDeleteButton() {
+        deleteButton.isHidden = mode != .edit
     }
     
     func bind(_ phoneBook: PhoneBook) {
@@ -165,5 +187,11 @@ extension PhoneBookView: ImageBindingDelegate {
     
     func bindImage(_ image: UIImage) {
         randomImageView.image = image
+    }
+}
+
+extension PhoneBookView {
+    @objc func deleteButtonTapped() {
+        print("delete")
     }
 }
