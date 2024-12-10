@@ -8,12 +8,17 @@
 import UIKit
 
 class PhoneBookViewController: UIViewController {
+    
+    private let vm: PhoneBookViewModel = .init()
+    
     private lazy var containerView: PhoneBookView = .init()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         layout()
+        setDelegate()
+        fetchPokemonImage(1)
     }
     
     private func setNavigationBar() {
@@ -28,9 +33,18 @@ class PhoneBookViewController: UIViewController {
             $0.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
+    private func setDelegate() {
+        vm.delegate = containerView
+        containerView.delegate = self
+    }
 }
 
-extension PhoneBookViewController {
+extension PhoneBookViewController: ImageFetchingDelegate {
+    func fetchPokemonImage(_ id: Int) {
+        vm.fetchPokemon(id)
+    }
+    
     @objc func confirmButtonTapped() {
         print("tapped")
     }

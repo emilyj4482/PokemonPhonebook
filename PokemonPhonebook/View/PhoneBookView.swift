@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol ImageFetchingDelegate: AnyObject {
+    func fetchPokemonImage(_ id: Int)
+}
+
 class PhoneBookView: UIView {
+    weak var delegate: ImageFetchingDelegate?
+    
     private lazy var randomImageView: UIImageView = {
         let imageView = UIImageView()
         
@@ -59,6 +65,8 @@ class PhoneBookView: UIView {
     }
     
     private func layout() {
+        backgroundColor = .systemBackground
+        
         addSubViews([randomImageView, fetchButton, nameTextField, numberTextField])
         
         let offset: CGFloat = 16
@@ -98,8 +106,12 @@ class PhoneBookView: UIView {
     }
 }
 
-extension PhoneBookView {
+extension PhoneBookView: ImageBindingDelegate {
     @objc func fetchButtonTapped() {
-        print("tapped")
+        delegate?.fetchPokemonImage(2)
+    }
+    
+    func bindImage(_ image: UIImage) {
+        randomImageView.image = image
     }
 }
