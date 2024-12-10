@@ -45,7 +45,7 @@ class ListCell: UITableViewCell {
     private func layout() {
         selectionStyle = .none
         
-        addSubViews([profileImageView, nameLabel, numberLabel])
+        addSubviews([profileImageView, nameLabel, numberLabel])
         
         let offset: CGFloat = 16
         

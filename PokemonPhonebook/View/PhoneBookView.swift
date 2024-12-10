@@ -36,41 +36,31 @@ class PhoneBookView: UIView {
         return button
     }()
     
-    private lazy var nameTextField: UITextField = {
+    private func phoneBookTextField(_ placeholder: String) -> UITextField {
         let textField = UITextField()
         
         textField.borderStyle = .roundedRect
-        textField.placeholder = "이름"
+        textField.placeholder = placeholder
         
         return textField
-    }()
+    }
     
-    private lazy var numberTextField: UITextField = {
-        let textField = UITextField()
-        
-        textField.borderStyle = .roundedRect
-        textField.placeholder = "전화번호"
-        
-        return textField
-    }()
+    private lazy var nameTextField = phoneBookTextField("이름")
     
-    private lazy var nameLabel: UILabel = {
+    private lazy var numberTextField = phoneBookTextField("전화번호")
+    
+    private func phoneBookLabel() -> UILabel {
         let label = UILabel()
         
         label.textColor = .label
         label.font = .systemFont(ofSize: 17)
         
         return label
-    }()
+    }
     
-    private lazy var numberLabel: UILabel = {
-        let label = UILabel()
-        
-        label.textColor = .label
-        label.font = .systemFont(ofSize: 17)
-        
-        return label
-    }()
+    private lazy var nameLabel = phoneBookLabel()
+    
+    private lazy var numberLabel = phoneBookLabel()
     
     init(frame: CGRect = .zero, mode: Mode) {
         self.mode = mode
@@ -91,7 +81,7 @@ class PhoneBookView: UIView {
     private func layout() {
         backgroundColor = .systemBackground
         
-        addSubViews([randomImageView, fetchButton, nameTextField, numberTextField, nameLabel, numberLabel])
+        addSubviews([randomImageView, fetchButton, nameTextField, numberTextField, nameLabel, numberLabel])
         
         let offset: CGFloat = 16
         
