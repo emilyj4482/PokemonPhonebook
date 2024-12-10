@@ -18,6 +18,7 @@ class PhoneBookView: UIView {
         let imageView = UIImageView()
         
         imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage.pokemonball
         
         return imageView
     }()
