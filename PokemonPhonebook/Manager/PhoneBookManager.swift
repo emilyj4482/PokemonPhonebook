@@ -15,4 +15,14 @@ class PhoneBookManager {
         PhoneBook(name: "꼬부기", phoneNumber: "010-1234-5678", randomImage: UIImage.pokemonball),
         PhoneBook(name: "이상해씨", phoneNumber: "010-3645-4567", randomImage: UIImage.pokemonball),
     ]
+    
+    func addPhoneBook(_ phoneBook: PhoneBook) {
+        phoneBooks.append(phoneBook)
+    }
+    
+    func updatePhoneBook(of id: UUID, phoneBook: PhoneBook) {
+        guard let index = phoneBooks.firstIndex(where: { $0.id == id }) else { return }
+        phoneBooks[index].update(phoneBook)
+        print(phoneBooks[index])
+    }
 }

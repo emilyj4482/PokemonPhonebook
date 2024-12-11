@@ -11,11 +11,7 @@ import Combine
 class MainListViewModel {
     private let phoneBookManager = PhoneBookManager.shared
     
-    var phoneBooks: [PhoneBook] {
-        didSet {
-            print(phoneBooks)
-        }
-    }
+    var phoneBooks: [PhoneBook]
     
     private var cancellables = Set<AnyCancellable>()
     

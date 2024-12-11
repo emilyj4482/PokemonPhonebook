@@ -73,6 +73,8 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
             navigationController?.popViewController(animated: true)
         case .edit:
             // TODO: 저장되었습니다 alert
+            updatePhoneBook()
+            configureContainerView()
             mode = .read
             containerView.mode = mode
             navigationItem.rightBarButtonItem?.title = mode.buttonTitle
@@ -80,11 +82,22 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
     }
     
     private func createPhoneBook() {
-        guard let phoneBook = containerView.createPhoneBook() else {
+        guard let phoneBook = containerView.returnPhoneBook() else {
             // TODO: Alert - 정보를 입력해주세요.
             return
         }
         vm.addPhoneBook(phoneBook)
+    }
+    
+    private func updatePhoneBook() {
+        guard
+            let id = phoneBook?.id,
+            let phoneBook = containerView.returnPhoneBook()
+        else {
+            // TODO: Alert - 정보를 입력해주세요.
+            return
+        }
+        vm.updatePhoneBook(of: id, phoneBook)
     }
     
 }

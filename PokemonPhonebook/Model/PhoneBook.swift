@@ -8,8 +8,14 @@
 import UIKit
 
 struct PhoneBook {
-    let id = UUID()
+    let id: UUID = .init()
     var name: String
     var phoneNumber: String
     var randomImage: UIImage = UIImage.pokemonball
+    
+    mutating func update(_ phoneBook: PhoneBook) {
+        name = phoneBook.name
+        phoneNumber = phoneBook.phoneNumber
+        randomImage = phoneBook.randomImage
+    }
 }

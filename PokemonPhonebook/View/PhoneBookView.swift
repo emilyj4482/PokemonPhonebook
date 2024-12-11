@@ -197,7 +197,7 @@ extension PhoneBookView {
 }
 
 extension PhoneBookView {
-    func createPhoneBook() -> PhoneBook? {
+    func returnPhoneBook() -> PhoneBook? {
         guard
             let name = nameTextField.text,
             let number = numberTextField.text,

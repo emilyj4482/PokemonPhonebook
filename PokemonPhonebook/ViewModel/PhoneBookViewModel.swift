@@ -46,6 +46,10 @@ class PhoneBookViewModel {
     }
     
     func addPhoneBook(_ phoneBook: PhoneBook) {
-        phoneBookManager.phoneBooks.append(phoneBook)
+        phoneBookManager.addPhoneBook(phoneBook)
+    }
+    
+    func updatePhoneBook(of id: UUID, _ phoneBook: PhoneBook) {
+        phoneBookManager.updatePhoneBook(of: id, phoneBook: phoneBook)
     }
 }
