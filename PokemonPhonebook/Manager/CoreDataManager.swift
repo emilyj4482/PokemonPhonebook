@@ -26,20 +26,21 @@ class CoreDataManager {
         if context.hasChanges {
             do {
                 try context.save()
-            } catch let error {
-                print("Error saving core data >>> \(error.localizedDescription)")
+            } catch {
+                print("Failed saving context")
             }
         }
     }
     
     func fetchData() -> [PhoneBook] {
         let request = NSFetchRequest<PhoneBookEntity>(entityName: CDKey.entity.rawValue)
-        
-        guard let entites = try? context.fetch(request) else {
+        do {
+            let entites = try context.fetch(request)
+            return entites.compactMap { $0.toStruct() }.sorted { $0.name < $1.name }
+        } catch {
+            print("Failed fetching context")
             return []
         }
-        
-        return entites.compactMap { $0.toStruct() }.sorted { $0.name < $1.name }
     }
     
     func addData(_ phoneBook: PhoneBook) {
@@ -78,7 +79,6 @@ class CoreDataManager {
             print("Failed deleting context")
         }
     }
-    
 }
 
 extension PhoneBook {
