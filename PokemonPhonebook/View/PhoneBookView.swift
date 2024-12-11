@@ -46,6 +46,7 @@ class PhoneBookView: UIView {
         
         textField.borderStyle = .roundedRect
         textField.placeholder = placeholder
+        textField.textAlignment = .left
         
         return textField
     }
@@ -59,6 +60,7 @@ class PhoneBookView: UIView {
         
         label.textColor = .label
         label.font = .systemFont(ofSize: 17)
+        label.textAlignment = .left
         
         return label
     }
@@ -132,12 +134,12 @@ class PhoneBookView: UIView {
         
         nameLabel.snp.makeConstraints {
             $0.top.bottom.trailing.equalTo(nameTextField)
-            $0.leading.equalTo(nameTextField.textInputView)
+            $0.leading.equalToSuperview().offset(23)
         }
         
         numberLabel.snp.makeConstraints {
             $0.top.bottom.trailing.equalTo(numberTextField)
-            $0.leading.equalTo(numberTextField.textInputView)
+            $0.leading.equalToSuperview().offset(23)
         }
         
         deleteButton.snp.makeConstraints {
