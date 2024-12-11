@@ -39,7 +39,7 @@ class CoreDataManager {
             return []
         }
         
-        return entites.compactMap { $0.toStruct() }
+        return entites.compactMap { $0.toStruct() }.sorted { $0.name < $1.name }
     }
     
     func addData(_ phoneBook: PhoneBook) {
