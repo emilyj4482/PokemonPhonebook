@@ -74,9 +74,9 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
         case .edit:
             // TODO: 저장되었습니다 alert
             updatePhoneBook()
-            configureContainerView()
             mode = .read
             containerView.mode = mode
+            configureContainerView()
             navigationItem.rightBarButtonItem?.title = mode.buttonTitle
         }
     }
@@ -97,6 +97,7 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
             // TODO: Alert - 정보를 입력해주세요.
             return
         }
+        self.phoneBook = phoneBook
         vm.updatePhoneBook(phoneBook)
     }
     
