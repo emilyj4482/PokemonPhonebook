@@ -198,7 +198,7 @@ extension PhoneBookView {
 }
 
 extension PhoneBookView {
-    func returnPhoneBook() -> PhoneBook? {
+    func returnPhoneBook(_ id: UUID) -> PhoneBook? {
         guard
             let name = nameTextField.text,
             let number = numberTextField.text,
@@ -207,6 +207,6 @@ extension PhoneBookView {
             return nil
         }
         
-        return PhoneBook(name: name, phoneNumber: number, randomImage: image)
+        return PhoneBook(id: id, name: name, phoneNumber: number, randomImage: image)
     }
 }

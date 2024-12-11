@@ -82,7 +82,7 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
     }
     
     private func createPhoneBook() {
-        guard let phoneBook = containerView.returnPhoneBook() else {
+        guard let phoneBook = containerView.returnPhoneBook(.init()) else {
             // TODO: Alert - 정보를 입력해주세요.
             return
         }
@@ -92,12 +92,12 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
     private func updatePhoneBook() {
         guard
             let id = phoneBook?.id,
-            let phoneBook = containerView.returnPhoneBook()
+            let phoneBook = containerView.returnPhoneBook(id)
         else {
             // TODO: Alert - 정보를 입력해주세요.
             return
         }
-        vm.updatePhoneBook(of: id, phoneBook)
+        vm.updatePhoneBook(phoneBook)
     }
     
     func deletePhoneBook() {

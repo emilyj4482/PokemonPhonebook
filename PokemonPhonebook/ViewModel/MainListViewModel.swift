@@ -6,17 +6,18 @@
 //
 
 import UIKit
-import Combine
 
 class MainListViewModel {
-    private let phoneBookManager = PhoneBookManager.shared
+    private let coreDataManager = CoreDataManager.shared
     
     var phoneBooks: [PhoneBook]
     
-    private var cancellables = Set<AnyCancellable>()
-    
     init() {
-        self.phoneBooks = phoneBookManager.phoneBooks
-        phoneBookManager.$phoneBooks.sink { self.phoneBooks = $0 }.store(in: &cancellables)
+        self.phoneBooks = coreDataManager.fetchData()
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchData), name: Notification.contextUpdated, object: nil)
+    }
+    
+    @objc func fetchData() {
+        phoneBooks = coreDataManager.fetchData()
     }
 }

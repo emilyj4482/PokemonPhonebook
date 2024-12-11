@@ -17,7 +17,7 @@ class PhoneBookViewModel {
     weak var delegate: ImageBindingDelegate?
     
     private let networkService: NetworkServiceType
-    private let phoneBookManager = PhoneBookManager.shared
+    private let coreDataManager = CoreDataManager.shared
     
     init(networkService: NetworkServiceType = NetworkService()) {
         self.networkService = networkService
@@ -46,14 +46,21 @@ class PhoneBookViewModel {
     }
     
     func addPhoneBook(_ phoneBook: PhoneBook) {
-        phoneBookManager.addPhoneBook(phoneBook)
+        coreDataManager.addData(phoneBook)
+        postNotification()
     }
     
-    func updatePhoneBook(of id: UUID, _ phoneBook: PhoneBook) {
-        phoneBookManager.updatePhoneBook(of: id, phoneBook: phoneBook)
+    func updatePhoneBook(_ phoneBook: PhoneBook) {
+        coreDataManager.updateData(phoneBook)
+        postNotification()
     }
     
     func deletePhoneBook(of id: UUID) {
-        phoneBookManager.deletePhoneBook(of: id)
+        coreDataManager.deleteData(of: id)
+        postNotification()
+    }
+    
+    func postNotification() {
+        NotificationCenter.default.post(name: Notification.contextUpdated, object: nil)
     }
 }
