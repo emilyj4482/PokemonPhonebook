@@ -23,7 +23,7 @@ class MainListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        containerView.reloadTableView()
+        containerView.reloadView(vm.phoneBooks.count == 0)
     }
     
     private func setNavigationBar() {

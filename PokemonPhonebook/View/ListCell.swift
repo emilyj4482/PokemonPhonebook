@@ -44,6 +44,7 @@ class ListCell: UITableViewCell {
     
     private func layout() {
         selectionStyle = .none
+        backgroundColor = .systemBackground
         
         addSubviews([profileImageView, nameLabel, numberLabel])
         

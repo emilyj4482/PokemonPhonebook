@@ -20,11 +20,24 @@ class MainListView: UIView {
     private lazy var listTableView: UITableView = {
         let tableView = UITableView()
         
+        tableView.backgroundColor = .systemBackground
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.identifier)
+        tableView.isHidden = true
         
         return tableView
+    }()
+    
+    private lazy var blankView: UILabel = {
+        let label = UILabel()
+        
+        label.backgroundColor = .systemBackground
+        label.text = "연락처 없음 😕"
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 25, weight: .light)
+        
+        return label
     }()
     
     override init(frame: CGRect) {
@@ -39,15 +52,21 @@ class MainListView: UIView {
     private func layout() {
         backgroundColor = .systemBackground
         
-        addSubview(listTableView)
+        addSubviews([listTableView, blankView])
         
         listTableView.snp.makeConstraints {
             $0.top.bottom.leading.trailing.equalToSuperview()
         }
+        
+        blankView.snp.makeConstraints {
+            $0.top.bottom.leading.trailing.equalToSuperview()
+        }
     }
     
-    func reloadTableView() {
+    func reloadView(_ isBlank: Bool) {
         listTableView.reloadData()
+        blankView.isHidden = !isBlank
+        listTableView.isHidden = isBlank
     }
 }
 
