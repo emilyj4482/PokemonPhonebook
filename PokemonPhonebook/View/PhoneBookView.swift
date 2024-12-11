@@ -9,6 +9,7 @@ import UIKit
 
 protocol PhoneBookViewDelegate: AnyObject {
     func fetchPokemonImage()
+    func deletePhoneBook()
 }
 
 class PhoneBookView: UIView {
@@ -192,7 +193,7 @@ extension PhoneBookView: ImageBindingDelegate {
 
 extension PhoneBookView {
     @objc func deleteButtonTapped() {
-        print("delete")
+        delegate?.deletePhoneBook()
     }
 }
 

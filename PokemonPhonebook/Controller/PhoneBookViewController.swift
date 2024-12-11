@@ -100,6 +100,12 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
         vm.updatePhoneBook(of: id, phoneBook)
     }
     
+    func deletePhoneBook() {
+        // TODO: Alert - 정말 삭제하시겠습니까?
+        guard let id = phoneBook?.id else { return }
+        vm.deletePhoneBook(of: id)
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 #Preview {

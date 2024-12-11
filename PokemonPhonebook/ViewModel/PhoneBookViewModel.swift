@@ -52,4 +52,8 @@ class PhoneBookViewModel {
     func updatePhoneBook(of id: UUID, _ phoneBook: PhoneBook) {
         phoneBookManager.updatePhoneBook(of: id, phoneBook: phoneBook)
     }
+    
+    func deletePhoneBook(of id: UUID) {
+        phoneBookManager.deletePhoneBook(of: id)
+    }
 }

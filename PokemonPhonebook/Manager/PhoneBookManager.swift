@@ -25,4 +25,9 @@ class PhoneBookManager {
         phoneBooks[index].update(phoneBook)
         print(phoneBooks[index])
     }
+    
+    func deletePhoneBook(of id: UUID) {
+        guard let index = phoneBooks.firstIndex(where: { $0.id == id }) else { return }
+        phoneBooks.remove(at: index)
+    }
 }

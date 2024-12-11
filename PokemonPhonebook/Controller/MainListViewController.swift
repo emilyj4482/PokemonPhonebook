@@ -27,7 +27,7 @@ class MainListViewController: UIViewController {
     }
     
     private func setNavigationBar() {
-        navigationItem.title = "친구 목록"
+        navigationItem.title = "연락처 목록"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
     }
 }
