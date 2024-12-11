@@ -19,7 +19,7 @@ class PhoneBookViewController: UIViewController {
         setNavigationBar()
         layout()
         setDelegate()
-        configureContainerView()
+        configureViewByMode()
     }
     
     private func setNavigationBar() {
@@ -39,7 +39,7 @@ class PhoneBookViewController: UIViewController {
         containerView.delegate = self
     }
     
-    private func configureContainerView() {
+    private func configureViewByMode() {
         switch mode {
         case .read:
             guard let phoneBook = phoneBook else { return }
@@ -76,7 +76,7 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
             updatePhoneBook()
             mode = .read
             containerView.mode = mode
-            configureContainerView()
+            configureViewByMode()
             navigationItem.rightBarButtonItem?.title = mode.buttonTitle
         }
     }
