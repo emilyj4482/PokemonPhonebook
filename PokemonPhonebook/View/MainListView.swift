@@ -45,6 +45,10 @@ class MainListView: UIView {
             $0.top.bottom.leading.trailing.equalToSuperview()
         }
     }
+    
+    func reloadTableView() {
+        listTableView.reloadData()
+    }
 }
 
 extension MainListView: UITableViewDataSource, UITableViewDelegate {

@@ -17,12 +17,14 @@ class PhoneBookViewModel {
     weak var delegate: ImageBindingDelegate?
     
     private let networkService: NetworkServiceType
+    private let phoneBookManager = PhoneBookManager.shared
     
     init(networkService: NetworkServiceType = NetworkService()) {
         self.networkService = networkService
     }
     
-    func fetchPokemon(_ id: Int) {
+    func fetchPokemon() {
+        let id = Int.random(in: 0...1000)
         let urlCompoments = URLComponents(string: "https://pokeapi.co/api/v2/pokemon/\(id)")
         guard let url = urlCompoments?.url else { return }
         
@@ -41,5 +43,17 @@ class PhoneBookViewModel {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func addPhoneBook(_ phoneBook: PhoneBook) {
+        phoneBookManager.addPhoneBook(phoneBook)
+    }
+    
+    func updatePhoneBook(of id: UUID, _ phoneBook: PhoneBook) {
+        phoneBookManager.updatePhoneBook(of: id, phoneBook: phoneBook)
+    }
+    
+    func deletePhoneBook(of id: UUID) {
+        phoneBookManager.deletePhoneBook(of: id)
     }
 }
