@@ -8,7 +8,7 @@
 import UIKit
 
 protocol PhoneBookViewDelegate: AnyObject {
-    func fetchPokemonImage(_ id: Int)
+    func fetchPokemonImage()
 }
 
 class PhoneBookView: UIView {
@@ -169,7 +169,7 @@ class PhoneBookView: UIView {
     }
     
     func bind(_ phoneBook: PhoneBook) {
-        randomImageView.image = UIImage(named: phoneBook.imageURL)
+        randomImageView.image = phoneBook.randomImage
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
     }
@@ -182,7 +182,7 @@ class PhoneBookView: UIView {
 
 extension PhoneBookView: ImageBindingDelegate {
     @objc func fetchButtonTapped() {
-        delegate?.fetchPokemonImage(2)
+        delegate?.fetchPokemonImage()
     }
     
     func bindImage(_ image: UIImage) {
@@ -193,5 +193,19 @@ extension PhoneBookView: ImageBindingDelegate {
 extension PhoneBookView {
     @objc func deleteButtonTapped() {
         print("delete")
+    }
+}
+
+extension PhoneBookView {
+    func createPhoneBook() -> PhoneBook? {
+        guard
+            let name = nameTextField.text,
+            let number = numberTextField.text,
+            let image = randomImageView.image
+        else {
+            return nil
+        }
+        
+        return PhoneBook(name: name, phoneNumber: number, randomImage: image)
     }
 }

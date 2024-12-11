@@ -47,7 +47,7 @@ class PhoneBookViewController: UIViewController {
             containerView.bind(phoneBook)
         case .create:
             navigationItem.title = "연락처 추가"
-            fetchPokemonImage(1)
+            fetchPokemonImage()
         case .edit:
             return
         }
@@ -55,8 +55,8 @@ class PhoneBookViewController: UIViewController {
 }
 
 extension PhoneBookViewController: PhoneBookViewDelegate {
-    func fetchPokemonImage(_ id: Int) {
-        vm.fetchPokemon(id)
+    func fetchPokemonImage() {
+        vm.fetchPokemon()
     }
     
     @objc func barButtonTapped() {
@@ -69,6 +69,7 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
             containerView.bindTextFields(phoneBook)
         case .create:
             // TODO: 저장되었습니다 alert
+            createPhoneBook()
             navigationController?.popViewController(animated: true)
         case .edit:
             // TODO: 저장되었습니다 alert
@@ -77,6 +78,15 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
             navigationItem.rightBarButtonItem?.title = mode.buttonTitle
         }
     }
+    
+    private func createPhoneBook() {
+        guard let phoneBook = containerView.createPhoneBook() else {
+            // TODO: Alert - 정보를 입력해주세요.
+            return
+        }
+        vm.addPhoneBook(phoneBook)
+    }
+    
 }
 
 #Preview {

@@ -68,7 +68,7 @@ class ListCell: UITableViewCell {
     }
     
     func bind(_ phoneBook: PhoneBook) {
-        profileImageView.image = UIImage(named: phoneBook.imageURL)
+        profileImageView.image = phoneBook.randomImage
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
     }

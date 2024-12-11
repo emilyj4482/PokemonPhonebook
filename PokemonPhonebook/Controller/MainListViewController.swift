@@ -21,6 +21,11 @@ class MainListViewController: UIViewController {
         containerView.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        containerView.reloadTableView()
+    }
+    
     private func setNavigationBar() {
         navigationItem.title = "친구 목록"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
