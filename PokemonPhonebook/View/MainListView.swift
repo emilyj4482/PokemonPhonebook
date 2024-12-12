@@ -26,7 +26,6 @@ class MainListView: UIView {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.identifier)
-        tableView.isHidden = true
         
         return tableView
     }()
