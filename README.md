@@ -154,4 +154,66 @@ class MainListViewController: UIViewController {
     }
 }
 ```
+- `PhoneBookView`의 재사용
+> `enum`으로 모드 값을 관리하여 `.read` 모드일 때는 이름과 연락처가 `UILabel`로 표시되도록 구현
+```swift
+class PhoneBookView: UIView {
+    var mode: Mode {
+        didSet {
+            setupView()
+        }
+    }
+
+    private func setupView() {
+        switch mode {
+        case .read:
+            hideTextField(true)
+        default:
+            hideTextField(false)
+        }
+        hideDeleteButton()
+    }
+}
+```
 ### 04) 연락처 수정하기
+![Screen Recording 2024-12-12 at 16 16 09](https://github.com/user-attachments/assets/fb4c919b-6a21-4605-a2eb-8da224fafa7c)
+<br>연락처 조회 모드 상태에서 우측 상단 바 버튼 `수정`을 탭하면 수정 모드가 되어 `UILabel`이 `hidden`되고 데이터가 입력된 상태의 `UITextField`가 `!hidden` 됩니다.
+<br>수정 모드일 때만 `연락처 삭제` 버튼이 보이도록 구현했습니다.
+<br>수정사항을 입력하고 `저장` 버튼을 탭하면 변경사항이 적용된 조회 모드 화면이 됩니다.
+```swift
+// 우측 상단 bar button이 모드에 따라 다르게 동작하도록 분기하는 함수
+@objc func barButtonTapped() {
+    switch mode {
+    case .read:
+        // 조회 모드에서 수정 모드로 전환
+        mode = .edit
+        containerView.mode = mode
+        navigationItem.rightBarButtonItem?.title = mode.buttonTitle
+        // 조회 중인 연락처 정보가 입력된 상태의 textfield가 뜨도록 컨테이너 뷰 바인딩
+        guard let phoneBook = phoneBook else { return }
+        containerView.bindTextFields(phoneBook)
+    case .create:
+        // 추가 버튼이 눌리면 입력된 내용으로 연락처 정보를 생성하고 메인 목록 화면으로 돌아간다
+        createPhoneBook()
+        navigationController?.popViewController(animated: true)
+    case .edit:
+        // 수정 모드에서 저장 버튼이 눌리면 입력된 내용을 바탕으로 연락처 정보를 업데이트하고, 업데이트 내용이 반영된 상태로 조회모드로 전환
+        updatePhoneBook()
+        mode = .read
+        containerView.mode = mode
+        configureViewByMode()
+        navigationItem.rightBarButtonItem?.title = mode.buttonTitle
+    }
+}
+```
+### 05) 연락처 삭제하기
+![Screen Recording 2024-12-12 at 16 24 55](https://github.com/user-attachments/assets/d812f065-3aa5-4853-bcf4-d4ac98df55e6)
+<br>연락처 수정 모드에서만 나타나는 `연락처 삭제` 버튼을 누르면 연락처가 삭제됩니다.
+<br>`Controller`는 삭제해야 할 연락처의 `id` 값을 `view model`에게 전달하고 이전 화면인 `MainListViewController`로 이동합니다.
+```swift
+func deletePhoneBook() {
+    guard let id = phoneBook?.id else { return }
+    vm.deletePhoneBook(of: id)
+    navigationController?.popViewController(animated: true)
+}
+```
