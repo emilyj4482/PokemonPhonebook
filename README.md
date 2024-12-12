@@ -52,7 +52,7 @@
 
 ## 기능 소개
 ### 01) 연락처 목록 조회하기 : UITableView
-| blackView | listTableView |
+| blankView | listTableView |
 | ----- | ----- |
 | <img src ="https://github.com/user-attachments/assets/02f92b91-75ac-4a37-84ef-927980216b71" width=350> | <img src="https://github.com/user-attachments/assets/ae80f30c-f321-421b-b4f7-bf492225f8d7" width=350> |
 
@@ -111,7 +111,7 @@ protocol MainListViewDelegate: AnyObject {
 ![Screen Recording 2024-12-12 at 15 40 33](https://github.com/user-attachments/assets/c8d87066-d485-4199-9bd8-271dd8588997)
 <br>우측 상단 바 버튼 `추가`를 탭하면 `PhoneBookViewController`로 이동합니다.
 <br>이 때, `PhoneBookViewController`는 테이블 뷰 셀을 탭했을 때도 재사용되므로 `조회 모드`와 `추가 모드`를 구분하여 이동하도록 했습니다.
-<br>`PhoneBookViewController`의 `viewDidLoad` 시점에 랜덤 포켓몬 이미지가 네트워크 통신을 통해 불러오도록 했습니다.
+<br>`PhoneBookViewController`의 `viewDidLoad` 시점에 랜덤 포켓몬 이미지가 네트워크 통신을 통해 불려오도록 했습니다.
 ```swift
 class MainListViewController: UIViewController {
     private func setNavigationBar() {
