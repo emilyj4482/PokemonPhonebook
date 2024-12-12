@@ -18,16 +18,9 @@ class ListCell: UITableViewCell {
         return imageView
     }()
     
-    private lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        
-        return label
-    }()
+    private lazy var nameLabel = UILabel()
     
-    private lazy var numberLabel: UILabel = {
-        let label = UILabel()
-        return label
-    }()
+    private lazy var numberLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
