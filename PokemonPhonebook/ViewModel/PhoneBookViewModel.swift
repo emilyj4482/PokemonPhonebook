@@ -48,7 +48,7 @@ class PhoneBookViewModel {
     }
     
     /// controller로부터 데이터 변동이 있는 PhoneBook 정보를 받아 CoreDataManager에 전달해준다
-    /// 데이터 변동이 발생할 때마다 NotificationCenter를 통해 MainListView에 알려주어 업데이트 된 데이터를 fetch할 수 있게 한다
+    /// 데이터 변동이 발생할 때마다 NotificationCenter를 통해 MainListViewModel에게 알려주어 업데이트 된 데이터를 fetch할 수 있게 한다
     
     func addPhoneBook(_ phoneBook: PhoneBook) {
         coreDataManager.addData(phoneBook)
