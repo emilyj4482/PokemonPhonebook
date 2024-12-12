@@ -7,6 +7,8 @@
 
 import UIKit
 
+/// UIImage ↔ Data converting
+
 extension UIImage {
     var toData: Data? {
         return self.pngData()

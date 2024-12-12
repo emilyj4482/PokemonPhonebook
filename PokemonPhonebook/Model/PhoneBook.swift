@@ -14,6 +14,7 @@ struct PhoneBook {
     var randomImage: UIImage = UIImage.pokemonball
 }
 
+/// PhoneBookEntity를 구조체 형태로 전환하는 extension
 extension PhoneBookEntity {
     func toStruct() -> PhoneBook? {
         guard

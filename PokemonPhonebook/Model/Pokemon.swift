@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// API 명세에 따라 JSON 데이터를 디코딩할 자료 형태
 struct Pokemon: Decodable {
     let id: Int
     let name: String

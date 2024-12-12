@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 
+/// MainListView > listTableView의 셀
 class ListCell: UITableViewCell {
     static let identifier: String = "ListCell"
     

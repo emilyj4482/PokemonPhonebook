@@ -13,10 +13,12 @@ protocol MainListViewDelegate: AnyObject {
     func getPhoneBook(with index: Int) -> PhoneBook
 }
 
+/// MainViewController의 컨테이너 뷰
 class MainListView: UIView {
-    
+    // delegate : MainViewController
     weak var delegate: MainListViewDelegate?
     
+    /// 연락처 목록 뷰
     private lazy var listTableView: UITableView = {
         let tableView = UITableView()
         
@@ -29,6 +31,7 @@ class MainListView: UIView {
         return tableView
     }()
     
+    /// 연락처가 0개일 때 보여주는 뷰
     private lazy var blankView: UILabel = {
         let label = UILabel()
         
@@ -63,6 +66,8 @@ class MainListView: UIView {
         }
     }
     
+    // MainViewController가 appear 할 때마다 호출되는 함수
+    // 연락처가 0개인지 여부를 bool 값으로 받아 숨기고 노출할 뷰를 결정
     func reloadView(_ isBlank: Bool) {
         listTableView.reloadData()
         blankView.isHidden = !isBlank

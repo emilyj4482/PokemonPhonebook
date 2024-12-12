@@ -81,6 +81,7 @@ class CoreDataManager {
     }
 }
 
+/// PhoneBook 구조체를 Entity 형태로 전환하는 extension
 extension PhoneBook {
     func toEntity(in context: NSManagedObjectContext) -> PhoneBookEntity {
         let entity = PhoneBookEntity(context: context)
