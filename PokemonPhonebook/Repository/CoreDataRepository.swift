@@ -62,7 +62,7 @@ class CoreDataRepository {
     }
     
     func addData(_ phoneBook: PhoneBook) {
-        _ = phoneBook.createEntity(in: context)
+        phoneBook.createEntity(in: context)
         saveData()
     }
     
@@ -80,10 +80,9 @@ class CoreDataRepository {
 }
 
 extension PhoneBook {
-    func createEntity(in context: NSManagedObjectContext) -> PhoneBookEntity {
+    func createEntity(in context: NSManagedObjectContext) {
         let entity = PhoneBookEntity(context: context)
         updateEntity(entity)
-        return entity
     }
     
     func updateEntity(_ entity: PhoneBookEntity) {
