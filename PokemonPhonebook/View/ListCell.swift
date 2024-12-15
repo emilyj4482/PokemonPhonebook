@@ -31,6 +31,14 @@ class ListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        profileImageView.image = UIImage.pokemonball
+        nameLabel.text = nil
+        numberLabel.text = nil
+    }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         profileImageView.setImageViewRounded()
