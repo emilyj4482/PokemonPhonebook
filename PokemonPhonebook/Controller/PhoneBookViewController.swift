@@ -28,9 +28,9 @@ class PhoneBookViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        containerView.delegate = self
         setNavigationBar()
         layout()
-        setDelegate()
         configureViewByMode()
     }
     
@@ -45,10 +45,6 @@ class PhoneBookViewController: UIViewController {
         containerView.snp.makeConstraints {
             $0.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
         }
-    }
-    
-    private func setDelegate() {
-        containerView.delegate = self
     }
     
     // 모드에 따라 view를 다르게 설정하는 함수

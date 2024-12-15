@@ -209,32 +209,25 @@ class PhoneBookView: UIView {
         numberTextView.text = phonBook.phoneNumber
     }
     
+    // ImageRepository를 통해 새로운 랜덤 이미지가 생성될 때마다 호출되어 image view와 바인딩하는 함수
     func bindImage(_ image: UIImage) {
         randomImageView.image = image
     }
 }
 
 extension PhoneBookView {
-    // 랜덤 이미지 생성 버튼이 탭 되었을 때 controller에게 view model의 이미지 fetching 함수를 불러달라고 명령
+    // 랜덤 이미지 생성 버튼이 탭 되었을 때 controller에게 ImageRepository를 통해 이미지 fetching을 해달라고 요청
     @objc func fetchButtonTapped() {
         delegate?.fetchPokemonImage()
     }
     
-    // PhoneBookViewModel에서 호출되는 함수로, ImageBindingDelegate를 준수하는 함수
-    // view model에서 네트워크 통신을 통해 불러온 이미지를 전달 받아 이미지 뷰와 바인딩한다
-    
-}
-
-extension PhoneBookView {
     // 연락처 삭제 버튼이 눌렸을 때 controller에게 알려주는 함수
     @objc func deleteButtonTapped() {
         delegate?.deletePhoneBook()
     }
-}
-
-extension PhoneBookView {
+    
     // controller에서 "저장" bar button이 눌리면 호출되는 함수
-    // 텍스트 뷰에 입력된 값과 전달 받은 id 값을 조합하여 PhoneBook 데이터를 반환
+    // 텍스트 뷰에 입력된 값과 현재 띄워져있는 이미지를 조합하여 PhoneBook 데이터를 반환
     func returnPhoneBook() -> PhoneBook? {
         guard
             let name = nameTextView.text,

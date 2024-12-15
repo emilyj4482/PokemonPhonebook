@@ -18,8 +18,8 @@ class MainListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
         containerView.delegate = self
+        setNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
