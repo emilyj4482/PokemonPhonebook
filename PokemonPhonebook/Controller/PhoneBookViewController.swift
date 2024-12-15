@@ -77,7 +77,7 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
             navigationItem.rightBarButtonItem?.title = mode.buttonTitle
             // 조회 중인 연락처 정보가 입력된 상태의 textfield가 뜨도록 컨테이너 뷰 바인딩
             guard let phoneBook = phoneBook else { return }
-            containerView.bindTextFields(phoneBook)
+            containerView.bindTextViews(phoneBook)
         case .create:
             // 추가 버튼이 눌리면 입력된 내용으로 연락처 정보를 생성하고 메인 목록 화면으로 돌아간다
             createPhoneBook()

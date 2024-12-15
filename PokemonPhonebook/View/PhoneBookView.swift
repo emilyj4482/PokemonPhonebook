@@ -47,22 +47,25 @@ class PhoneBookView: UIView {
         return button
     }()
     
-    /// 텍스트필드 재사용 함수 : fyi. 텍스트필드는 read 모드에서 hidden
-    private func phoneBookTextField(_ placeholder: String) -> UITextField {
-        let textField = UITextField()
+    /// 텍스트 뷰 재사용 함수 : fyi. 텍스트 뷰는 read 모드에서 hidden
+    private func phoneBookTextView() -> UITextView {
+        let textView = UITextView()
         
-        textField.borderStyle = .roundedRect
-        textField.placeholder = placeholder
-        textField.textAlignment = .left
+        textView.layer.borderColor = UIColor.gray.cgColor
+        textView.layer.borderWidth = 1.0
+        textView.layer.cornerRadius = 8.0
+        textView.textAlignment = .left
+        textView.font = .systemFont(ofSize: 17)
+        textView.textContainerInset.top = 10.0
         
-        return textField
+        return textView
     }
     
-    /// 이름 입력 받는 텍스트필드
-    private lazy var nameTextField = phoneBookTextField("이름")
+    /// 이름 입력 받는 텍스트 뷰
+    private lazy var nameTextView = phoneBookTextView()
     
-    /// 전화번호 입력 받는 텍스트필드
-    private lazy var numberTextField = phoneBookTextField("전화번호")
+    /// 전화번호 입력 받는 텍스트 뷰
+    private lazy var numberTextView = phoneBookTextView()
     
     /// 레이블 재사용 함수 : fyi. 레이블은 create, edit 모드에서 hidden
     private func phoneBookLabel() -> UILabel {
@@ -114,7 +117,7 @@ class PhoneBookView: UIView {
     private func layout() {
         backgroundColor = .systemBackground
         
-        addSubviews([randomImageView, fetchButton, nameTextField, numberTextField, nameLabel, numberLabel, deleteButton])
+        addSubviews([randomImageView, fetchButton, nameTextView, numberTextView, nameLabel, numberLabel, deleteButton])
         
         let offset: CGFloat = 16
         
@@ -131,33 +134,35 @@ class PhoneBookView: UIView {
             $0.top.equalTo(randomImageView.snp.bottom).offset(offset)
         }
         
-        nameTextField.snp.makeConstraints {
+        nameTextView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(fetchButton.snp.bottom).offset(32)
             $0.leading.equalToSuperview().offset(offset)
             $0.trailing.equalToSuperview().offset(-offset)
+            $0.height.equalTo(40)
         }
         
-        numberTextField.snp.makeConstraints {
+        numberTextView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(nameTextField.snp.bottom).offset(offset)
+            $0.top.equalTo(nameTextView.snp.bottom).offset(offset)
             $0.leading.equalToSuperview().offset(offset)
             $0.trailing.equalToSuperview().offset(-offset)
+            $0.height.equalTo(40)
         }
         
         nameLabel.snp.makeConstraints {
-            $0.top.bottom.trailing.equalTo(nameTextField)
-            $0.leading.equalToSuperview().offset(23)
+            $0.top.bottom.trailing.equalTo(nameTextView)
+            $0.leading.equalToSuperview().offset(21)
         }
         
         numberLabel.snp.makeConstraints {
-            $0.top.bottom.trailing.equalTo(numberTextField)
-            $0.leading.equalToSuperview().offset(23)
+            $0.top.bottom.trailing.equalTo(numberTextView)
+            $0.leading.equalToSuperview().offset(21)
         }
         
         deleteButton.snp.makeConstraints {
             $0.top.equalTo(numberLabel.snp.bottom).offset(40)
-            $0.leading.trailing.equalTo(numberTextField)
+            $0.leading.trailing.equalTo(numberTextView)
             $0.height.equalTo(50)
         }
     }
@@ -166,17 +171,17 @@ class PhoneBookView: UIView {
     private func setupView() {
         switch mode {
         case .read:
-            hideTextField(true)
+            hideTextView(true)
         default:
-            hideTextField(false)
+            hideTextView(false)
         }
         hideDeleteButton()
     }
     
-    // 텍스트필드를 숨겨야하는 read 모드일 때 true 값을 받아 그에 따라 컴포넌트들의 hidden 값을 설정하는 함수
-    private func hideTextField(_ bool: Bool) {
-        nameTextField.isHidden = bool
-        numberTextField.isHidden = bool
+    // 텍스트 뷰를 숨겨야하는 read 모드일 때 true 값을 받아 그에 따라 컴포넌트들의 hidden 값을 설정하는 함수
+    private func hideTextView(_ bool: Bool) {
+        nameTextView.isHidden = bool
+        numberTextView.isHidden = bool
         nameLabel.isHidden = !bool
         numberLabel.isHidden = !bool
         fetchButton.isEnabled = !bool
@@ -194,10 +199,10 @@ class PhoneBookView: UIView {
         numberLabel.text = phoneBook.phoneNumber
     }
     
-    // 수정 모드로 바뀔 때 호출되어 텍스트필드에 기존 값이 입력된 상태가 되게 하는 함수
-    func bindTextFields(_ phonBook: PhoneBook) {
-        nameTextField.text = phonBook.name
-        numberTextField.text = phonBook.phoneNumber
+    // 수정 모드로 바뀔 때 호출되어 텍스트 뷰에 기존 값이 입력된 상태가 되게 하는 함수
+    func bindTextViews(_ phonBook: PhoneBook) {
+        nameTextView.text = phonBook.name
+        numberTextView.text = phonBook.phoneNumber
     }
 }
 
@@ -223,11 +228,11 @@ extension PhoneBookView {
 
 extension PhoneBookView {
     // controller에서 "저장" bar button이 눌리면 호출되는 함수
-    // 텍스트필드에 입력된 값과 전달 받은 id 값을 조합하여 PhoneBook 데이터를 반환
+    // 텍스트 뷰에 입력된 값과 전달 받은 id 값을 조합하여 PhoneBook 데이터를 반환
     func returnPhoneBook(_ id: UUID) -> PhoneBook? {
         guard
-            let name = nameTextField.text,
-            let number = numberTextField.text,
+            let name = nameTextView.text,
+            let number = numberTextView.text,
             let image = randomImageView.image
         else { return nil }
         
