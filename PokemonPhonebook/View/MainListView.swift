@@ -10,7 +10,7 @@ import UIKit
 protocol MainListViewDelegate: AnyObject {
     func pushPhoneBookView(with index: Int)
     func getPhoneBookCount() -> Int
-    func getPhoneBook(with index: Int) -> PhoneBook
+    func getPhoneBook(with index: Int) -> PhoneBookEntity
 }
 
 /// MainViewController의 컨테이너 뷰

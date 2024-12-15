@@ -193,14 +193,18 @@ class PhoneBookView: UIView {
     }
     
     // controller에서 연락처 정보를 받아 ui와 바인딩
-    func bind(_ phoneBook: PhoneBook) {
-        randomImageView.image = phoneBook.randomImage
+    func bind(_ phoneBook: PhoneBookEntity) {
+        if let imageData = phoneBook.randomImage {
+            randomImageView.image = UIImage(data: imageData)
+        } else {
+            randomImageView.image = UIImage.pokemonball
+        }
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
     }
     
     // 수정 모드로 바뀔 때 호출되어 텍스트 뷰에 기존 값이 입력된 상태가 되게 하는 함수
-    func bindTextViews(_ phonBook: PhoneBook) {
+    func bindTextViews(_ phonBook: PhoneBookEntity) {
         nameTextView.text = phonBook.name
         numberTextView.text = phonBook.phoneNumber
     }
@@ -231,13 +235,13 @@ extension PhoneBookView {
 extension PhoneBookView {
     // controller에서 "저장" bar button이 눌리면 호출되는 함수
     // 텍스트 뷰에 입력된 값과 전달 받은 id 값을 조합하여 PhoneBook 데이터를 반환
-    func returnPhoneBook(_ id: UUID) -> PhoneBook? {
+    func returnPhoneBook() -> PhoneBook? {
         guard
             let name = nameTextView.text,
             let number = numberTextView.text,
             let image = randomImageView.image
         else { return nil }
         
-        return PhoneBook(id: id, name: name, phoneNumber: number, randomImage: image)
+        return PhoneBook(name: name, phoneNumber: number, randomImage: image)
     }
 }

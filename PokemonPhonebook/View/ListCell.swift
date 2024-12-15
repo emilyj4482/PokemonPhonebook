@@ -62,8 +62,12 @@ class ListCell: UITableViewCell {
         }
     }
     
-    func bind(_ phoneBook: PhoneBook) {
-        profileImageView.image = phoneBook.randomImage
+    func bind(_ phoneBook: PhoneBookEntity) {
+        if let imageData = phoneBook.randomImage {
+            profileImageView.image = UIImage(data: imageData)
+        } else {
+            profileImageView.image = UIImage.pokemonball
+        }
         nameLabel.text = phoneBook.name
         numberLabel.text = phoneBook.phoneNumber
     }

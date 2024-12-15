@@ -6,16 +6,25 @@
 //
 
 import UIKit
+import CoreData
 
 /// 연락처 추가/조회/수정 화면 controller
 class PhoneBookViewController: UIViewController {
-    private let vm: PhoneBookViewModel = .init()
-    
     private let imageRepository: ImageRepository = .init()
+    private let coreDataRepository: CoreDataRepository
     private lazy var containerView: PhoneBookView = .init(mode: mode)
     
     var mode: Mode = .read
-    var phoneBook: PhoneBook?
+    var phoneBookID: NSManagedObjectID?
+    
+    init(coreDataRepository: CoreDataRepository) {
+        self.coreDataRepository = coreDataRepository
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +56,10 @@ class PhoneBookViewController: UIViewController {
         switch mode {
         case .read:
             /// 조회 모드 일 때 네비게이션 타이틀을 연락처 이름으로 설정하고 컨테이너 view에도 연락처 정보를 바인딩 시켜준다
-            guard let phoneBook = phoneBook else { return }
+            guard
+                let id = phoneBookID,
+                let phoneBook = coreDataRepository.searchData(with: id)
+            else { return }
             navigationItem.title = phoneBook.name
             containerView.bind(phoneBook)
         case .create:
@@ -63,7 +75,6 @@ class PhoneBookViewController: UIViewController {
 
 extension PhoneBookViewController: PhoneBookViewDelegate {
     func fetchPokemonImage() {
-        // vm.fetchPokemon()
         imageRepository.fetchPokemon { [weak self] image in
             guard let self = self, let image = image else { return }
             self.containerView.bindImage(image)
@@ -79,7 +90,10 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
             containerView.mode = mode
             navigationItem.rightBarButtonItem?.title = mode.buttonTitle
             // 조회 중인 연락처 정보가 입력된 상태의 textfield가 뜨도록 컨테이너 뷰 바인딩
-            guard let phoneBook = phoneBook else { return }
+            guard
+                let id = phoneBookID,
+                let phoneBook = coreDataRepository.searchData(with: id)
+            else { return }
             containerView.bindTextViews(phoneBook)
         case .create:
             // 추가 버튼이 눌리면 입력된 내용으로 연락처 정보를 생성하고 메인 목록 화면으로 돌아간다
@@ -96,33 +110,27 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
     }
     
     /// 추가 모드에서 "추가" 버튼이 눌렸을 때 호출되는 함수
-    /// 컨테이너 뷰로부터 입력된 내용을 바탕으로 PhoneBook 정보를 받아 view model에 전달
+    /// 컨테이너 뷰로부터 입력된 내용을 바탕으로 PhoneBook 정보를 받아 coreDataRepository에 전달
     private func createPhoneBook() {
-        guard let phoneBook = containerView.returnPhoneBook(.init()) else { return }
-        vm.addPhoneBook(phoneBook)
+        guard let phoneBook = containerView.returnPhoneBook() else { return }
+        coreDataRepository.addData(phoneBook)
     }
     
     /// 수정 모드에서 "저장" 버튼이 눌렸을 때 호출되는 함수
-    /// 컨테이너 뷰 안에 있는 텍스트필드에 입력된 이름과 전화번호를 수정 중인 연락처의 id 값과 조합하여 view model에 전달
+    /// 컨테이너 뷰로부터 입력된 내용을 id 값과 함께 coreDataRepository에 전달
     private func updatePhoneBook() {
         guard
-            let id = phoneBook?.id,
-            let phoneBook = containerView.returnPhoneBook(id)
+            let id = phoneBookID,
+            let phoneBook = containerView.returnPhoneBook()
         else { return }
-        // 수정한 내용이 반영되어 조회 모드로 넘어가도록 controller의 phoneBook에 새로운 phoneBook 값 할당
-        self.phoneBook = phoneBook
-        vm.updatePhoneBook(phoneBook)
+        coreDataRepository.updateData(with: id, phoneBook)
     }
     
     /// 수정 모드에서 하단 "연락처 삭제" 버튼이 눌렸을 때 호출되는 함수
-    /// 연락처의 id 값을 view model에 전달하고 연락처 목록 화면으로 돌아간다
+    /// id 값을 coreDataRepository에 전달하고 연락처 목록 화면으로 돌아간다
     func deletePhoneBook() {
-        guard let id = phoneBook?.id else { return }
-        vm.deletePhoneBook(of: id)
+        guard let id = phoneBookID else { return }
+        coreDataRepository.deleteData(with: id)
         navigationController?.popViewController(animated: true)
     }
-}
-
-#Preview {
-    UINavigationController(rootViewController: PhoneBookViewController())
 }
