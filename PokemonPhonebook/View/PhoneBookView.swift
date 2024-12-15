@@ -204,9 +204,13 @@ class PhoneBookView: UIView {
         nameTextView.text = phonBook.name
         numberTextView.text = phonBook.phoneNumber
     }
+    
+    func bindImage(_ image: UIImage) {
+        randomImageView.image = image
+    }
 }
 
-extension PhoneBookView: ImageBindingDelegate {
+extension PhoneBookView {
     // 랜덤 이미지 생성 버튼이 탭 되었을 때 controller에게 view model의 이미지 fetching 함수를 불러달라고 명령
     @objc func fetchButtonTapped() {
         delegate?.fetchPokemonImage()
@@ -214,9 +218,7 @@ extension PhoneBookView: ImageBindingDelegate {
     
     // PhoneBookViewModel에서 호출되는 함수로, ImageBindingDelegate를 준수하는 함수
     // view model에서 네트워크 통신을 통해 불러온 이미지를 전달 받아 이미지 뷰와 바인딩한다
-    func bindImage(_ image: UIImage) {
-        randomImageView.image = image
-    }
+    
 }
 
 extension PhoneBookView {

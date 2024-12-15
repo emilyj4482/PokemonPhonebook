@@ -10,6 +10,8 @@ import UIKit
 /// 연락처 추가/조회/수정 화면 controller
 class PhoneBookViewController: UIViewController {
     private let vm: PhoneBookViewModel = .init()
+    
+    private let imageRepository: ImageRepository = .init()
     private lazy var containerView: PhoneBookView = .init(mode: mode)
     
     var mode: Mode = .read
@@ -37,7 +39,6 @@ class PhoneBookViewController: UIViewController {
     }
     
     private func setDelegate() {
-        vm.delegate = containerView
         containerView.delegate = self
     }
     
@@ -61,10 +62,12 @@ class PhoneBookViewController: UIViewController {
 }
 
 extension PhoneBookViewController: PhoneBookViewDelegate {
-    // view model에 있는 랜덤 포켓몬 이미지 생성 + 뷰 바인딩 함수를 호출하는 함수
-    // viewDidLoad 시점과 컨테이너 view 안에 있는 버튼 탭 시점에 호출된다
     func fetchPokemonImage() {
-        vm.fetchPokemon()
+        // vm.fetchPokemon()
+        imageRepository.fetchPokemon { [weak self] image in
+            guard let self = self, let image = image else { return }
+            self.containerView.bindImage(image)
+        }
     }
     
     // 우측 상단 bar button이 모드에 따라 다르게 동작하도록 분기하는 함수
