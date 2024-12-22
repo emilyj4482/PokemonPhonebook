@@ -10,6 +10,7 @@ import UIKit
 /// 연락처 추가/조회/수정 화면 controller
 class PhoneBookViewController: UIViewController {
     private let vm: PhoneBookViewModel = .init()
+    private lazy var navigationBar: NavigationBar = .init()
     private lazy var containerView: PhoneBookView = .init(mode: mode)
     
     var mode: Mode = .read
@@ -17,28 +18,40 @@ class PhoneBookViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
-        layout()
         setDelegate()
+        addSubviews()
+        layout()
+        setupNavigationBar()
         configureViewByMode()
-    }
-    
-    private func setNavigationBar() {
-        // mode에 따라 bar button 타이틀 다르게 설정 (수정 or 저장)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: mode.buttonTitle, style: .plain, target: self, action: #selector(barButtonTapped))
-    }
-    
-    private func layout() {
-        view.addSubview(containerView)
-        
-        containerView.snp.makeConstraints {
-            $0.top.bottom.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-        }
     }
     
     private func setDelegate() {
         vm.delegate = containerView
         containerView.delegate = self
+    }
+    
+    private func addSubviews() {
+        view.addSubviews([navigationBar, containerView])
+    }
+    
+    private func layout() {
+        navigationBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(50)
+        }
+        
+        containerView.snp.makeConstraints {
+            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func setupNavigationBar() {
+        // mode에 따라 bar button 타이틀 다르게 설정 (수정 or 저장)
+        navigationBar.setRightBarButtonTitle(mode.buttonTitle)
+        // bar button action 설정
+        leftBarButtonTapped()
+        rightBarButtonTapped()
     }
     
     // 모드에 따라 view를 다르게 설정하는 함수
@@ -47,11 +60,11 @@ class PhoneBookViewController: UIViewController {
         case .read:
             /// 조회 모드 일 때 네비게이션 타이틀을 연락처 이름으로 설정하고 컨테이너 view에도 연락처 정보를 바인딩 시켜준다
             guard let phoneBook = phoneBook else { return }
-            navigationItem.title = phoneBook.name
+            navigationBar.title = phoneBook.name
             containerView.bind(phoneBook)
         case .create:
             /// 추가 모드 일 때 네비게이션 타이틀을 "연락처 추가"로 지정해주고 자동으로 랜덤 포켓몬 프사를 띄운다
-            navigationItem.title = "연락처 추가"
+            navigationBar.title = "연락처 추가"
             fetchPokemonImage()
         case .edit:
             /// 수정 모드로의 전환은 조회에서 넘어가는 것만 가능하기 때문에 네비게이션 타이틀을 바꿔줄 필요가 없음
@@ -67,28 +80,36 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
         vm.fetchPokemon()
     }
     
-    // 우측 상단 bar button이 모드에 따라 다르게 동작하도록 분기하는 함수
-    @objc func barButtonTapped() {
-        switch mode {
-        case .read:
-            // 조회 모드에서 수정 모드로 전환
-            mode = .edit
-            containerView.mode = mode
-            navigationItem.rightBarButtonItem?.title = mode.buttonTitle
-            // 조회 중인 연락처 정보가 입력된 상태의 textfield가 뜨도록 컨테이너 뷰 바인딩
-            guard let phoneBook = phoneBook else { return }
-            containerView.bindTextFields(phoneBook)
-        case .create:
-            // 추가 버튼이 눌리면 입력된 내용으로 연락처 정보를 생성하고 메인 목록 화면으로 돌아간다
-            createPhoneBook()
+    private func leftBarButtonTapped() {
+        navigationBar.leftBarButtonAction = { [unowned self] in
             navigationController?.popViewController(animated: true)
-        case .edit:
-            // 수정 모드에서 저장 버튼이 눌리면 입력된 내용을 바탕으로 연락처 정보를 업데이트하고, 업데이트 내용이 반영된 상태로 조회모드로 전환
-            updatePhoneBook()
-            mode = .read
-            containerView.mode = mode
-            configureViewByMode()
-            navigationItem.rightBarButtonItem?.title = mode.buttonTitle
+        }
+    }
+    
+    // 우측 상단 bar button이 모드에 따라 다르게 동작하도록 분기하는 함수
+    private func rightBarButtonTapped() {
+        navigationBar.rightBarButtonAction = { [unowned self] in
+            switch mode {
+            case .read:
+                // 조회 모드에서 수정 모드로 전환
+                mode = .edit
+                containerView.mode = mode
+                navigationBar.setRightBarButtonTitle(mode.buttonTitle)
+                // 조회 중인 연락처 정보가 입력된 상태의 textfield가 뜨도록 컨테이너 뷰 바인딩
+                guard let phoneBook = phoneBook else { return }
+                containerView.bindTextFields(phoneBook)
+            case .create:
+                // 추가 버튼이 눌리면 입력된 내용으로 연락처 정보를 생성하고 메인 목록 화면으로 돌아간다
+                createPhoneBook()
+                navigationController?.popViewController(animated: true)
+            case .edit:
+                // 수정 모드에서 저장 버튼이 눌리면 입력된 내용을 바탕으로 연락처 정보를 업데이트하고, 업데이트 내용이 반영된 상태로 조회모드로 전환
+                updatePhoneBook()
+                mode = .read
+                containerView.mode = mode
+                configureViewByMode()
+                navigationBar.setRightBarButtonTitle(mode.buttonTitle)
+            }
         }
     }
     

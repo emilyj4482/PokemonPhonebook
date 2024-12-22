@@ -10,15 +10,14 @@ import UIKit
 /// 메인 연락처 목록 화면 controller
 class MainListViewController: UIViewController {
     private let vm: MainListViewModel = .init()
+    private lazy var navigationBar: NavigationBar = .init()
     private lazy var containerView: MainListView = .init()
-    
-    override func loadView() {
-        view = containerView
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBar()
+        addSubviews()
+        layout()
+        setupNavigationBar()
         containerView.delegate = self
     }
     
@@ -28,9 +27,34 @@ class MainListViewController: UIViewController {
         containerView.reloadView(vm.phoneBooks.count == 0)
     }
     
-    private func setNavigationBar() {
-        navigationItem.title = "연락처 목록"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "추가", style: .plain, target: self, action: #selector(addButtonTapped))
+    private func addSubviews() {
+        view.addSubviews([navigationBar, containerView])
+    }
+    
+    private func layout() {
+        navigationBar.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(50)
+        }
+        
+        containerView.snp.makeConstraints {
+            $0.top.equalTo(navigationBar.snp.bottom)
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.isHidden = true
+
+        navigationBar.title = "연락처 목록"
+        navigationBar.setRightBarButtonTitle("추가")
+        navigationBar.hideLeftBarButton()
+        
+        navigationBar.rightBarButtonAction = { [weak self] in
+            let vc = PhoneBookViewController()
+            vc.mode = .create
+            self?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 
