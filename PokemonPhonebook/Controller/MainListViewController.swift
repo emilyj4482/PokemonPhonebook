@@ -51,9 +51,10 @@ class MainListViewController: UIViewController {
         navigationBar.hideLeftBarButton()
         
         navigationBar.rightBarButtonAction = { [weak self] in
-            let vc = PhoneBookViewController()
+            guard let self = self else { return }
+            let vc = PhoneBookViewController(vm: PhoneBookViewModel(coreDataManager: self.vm.coreDataManager))
             vc.mode = .create
-            self?.navigationController?.pushViewController(vc, animated: true)
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }
@@ -72,7 +73,7 @@ extension MainListViewController: MainListViewDelegate {
     // table view delegate didSelectRowAt에서 호출되는 함수
     // 연락처 조회 모드로 PhoneBookView로 이동 : Mode 값 .read, 조회하는 PhoneBook 정보 전달하고 이동
     func pushPhoneBookView(with index: Int) {
-        let vc = PhoneBookViewController()
+        let vc = PhoneBookViewController(vm: PhoneBookViewModel(coreDataManager: vm.coreDataManager))
         vc.mode = .read
         vc.phoneBook = vm.phoneBooks[index]
         navigationController?.pushViewController(vc, animated: true)
@@ -81,7 +82,7 @@ extension MainListViewController: MainListViewDelegate {
     // 우측 상단 추가 bar button 탭했을 때 호출되는 함수
     // 연락처 추가 모드로 PhoneBookView로 이동 : Mode 값 .create
     @objc func addButtonTapped() {
-        let vc = PhoneBookViewController()
+        let vc = PhoneBookViewController(vm: PhoneBookViewModel(coreDataManager: vm.coreDataManager))
         vc.mode = .create
         navigationController?.pushViewController(vc, animated: true)
     }

@@ -9,12 +9,21 @@ import UIKit
 
 /// 연락처 추가/조회/수정 화면 controller
 class PhoneBookViewController: UIViewController {
-    private let vm: PhoneBookViewModel = .init()
+    private let vm: PhoneBookViewModel
     private lazy var navigationBar: NavigationBar = .init()
     private lazy var containerView: PhoneBookView = .init(mode: mode)
     
     var mode: Mode = .read
     var phoneBook: PhoneBook?
+    
+    init(vm: PhoneBookViewModel) {
+        self.vm = vm
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,8 +148,4 @@ extension PhoneBookViewController: PhoneBookViewDelegate {
         vm.deletePhoneBook(of: id)
         navigationController?.popViewController(animated: true)
     }
-}
-
-#Preview {
-    UINavigationController(rootViewController: PhoneBookViewController())
 }

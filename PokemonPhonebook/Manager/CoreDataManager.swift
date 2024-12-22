@@ -7,12 +7,17 @@
 
 import CoreData
 
-class CoreDataManager {
-    static let shared = CoreDataManager()
-    
+protocol CoreDataManagerType {
+    func fetchData() -> [PhoneBook]
+    func addData(_ phoneBook: PhoneBook)
+    func updateData(_ phoneBook: PhoneBook)
+    func deleteData(of id: UUID)
+}
+
+class CoreDataManager: CoreDataManagerType {
     var context: NSManagedObjectContext
     
-    private init() {
+    init() {
         let container = NSPersistentContainer(name: CDKey.container.rawValue)
         container.loadPersistentStores { description, error in
             if let error = error as NSError? {
@@ -22,7 +27,7 @@ class CoreDataManager {
         context = container.viewContext
     }
     
-    func saveData() {
+    private func saveData() {
         if context.hasChanges {
             do {
                 try context.save()
@@ -44,7 +49,7 @@ class CoreDataManager {
     }
     
     func addData(_ phoneBook: PhoneBook) {
-        _ = phoneBook.toEntity(in: context)
+        phoneBook.toEntity(in: context)
         saveData()
     }
     
@@ -83,12 +88,11 @@ class CoreDataManager {
 
 /// PhoneBook 구조체를 Entity 형태로 전환하는 extension
 extension PhoneBook {
-    func toEntity(in context: NSManagedObjectContext) -> PhoneBookEntity {
+    func toEntity(in context: NSManagedObjectContext) {
         let entity = PhoneBookEntity(context: context)
         entity.id = self.id
         entity.name = self.name
         entity.phoneNumber = self.phoneNumber
         entity.randomImage = self.randomImage.toData
-        return entity
     }
 }

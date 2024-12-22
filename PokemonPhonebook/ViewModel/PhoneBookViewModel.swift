@@ -17,10 +17,14 @@ class PhoneBookViewModel {
     weak var delegate: ImageBindingDelegate?
     
     private let networkService: NetworkServiceType
-    private let coreDataManager = CoreDataManager.shared
+    private let coreDataManager: CoreDataManagerType
     
-    init(networkService: NetworkServiceType = NetworkService()) {
+    init(
+        networkService: NetworkServiceType = NetworkService(),
+        coreDataManager: CoreDataManagerType
+    ) {
         self.networkService = networkService
+        self.coreDataManager = coreDataManager
     }
     
     // 네트워크 통신을 통해 포켓몬 정보를 받아온 뒤 그 중 image url 값을 이용하여 또다시 네트워크 통신을 하여 image를 불러온다
