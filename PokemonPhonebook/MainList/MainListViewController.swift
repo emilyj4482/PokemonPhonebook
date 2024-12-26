@@ -32,6 +32,8 @@ class MainListViewController: UIViewController {
     }
     
     private func layout() {
+        view.backgroundColor = .systemBackground
+        
         navigationBar.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             $0.height.equalTo(50)
